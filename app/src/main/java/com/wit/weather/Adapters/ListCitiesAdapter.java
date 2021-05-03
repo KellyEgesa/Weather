@@ -2,18 +2,16 @@ package com.wit.weather.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.internal.$Gson$Preconditions;
 import com.wit.weather.Constants;
 import com.wit.weather.Models.Cities;
 import com.wit.weather.Models.WeatherModels;
@@ -25,7 +23,6 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -74,7 +71,7 @@ public class ListCitiesAdapter extends RecyclerView.Adapter<ListCitiesAdapter.Li
         }
 
         public void bindCities(Cities city) {
-            String cityName = city.getCityName()+", "+city.getCountryName();
+            String cityName = city.getCityName() + ", " + city.getCountryName();
             mCityName.setText(cityName);
 
             mcardCity.setOnClickListener(new View.OnClickListener() {
@@ -82,30 +79,30 @@ public class ListCitiesAdapter extends RecyclerView.Adapter<ListCitiesAdapter.Li
                 public void onClick(View v) {
                     Weather client = WeatherClient.urlRequest();
                     Map<String, String> queryParams = new HashMap<>();
-                    queryParams.put("lat", String.valueOf( city.getLatitude()));
-                    queryParams.put("lon", String.valueOf( city.getLongitude()));
-                    queryParams.put("lat", String.valueOf( city.getLatitude()));
+                    queryParams.put("lat", String.valueOf(city.getLatitude()));
+                    queryParams.put("lon", String.valueOf(city.getLongitude()));
+                    queryParams.put("lat", String.valueOf(city.getLatitude()));
                     queryParams.put("exclude", "minutely,hourly");
                     queryParams.put("appid", Constants.ACCESS_TOKEN);
-
+                    queryParams.put("units", "metric");
 
                     Call<WeatherModels> call = client.getWeather(queryParams);
 
-                   call.enqueue(new Callback<WeatherModels>() {
-                       @Override
-                       public void onResponse(Call<WeatherModels> call, Response<WeatherModels> response) {
-                           if(response.isSuccessful()){
-                               Intent intent = new Intent(mContext, com.wit.weather.UserInterface.Weather.class);
-                               intent.putExtra("Weather", Parcels.wrap(response.body()));
-                               mContext.startActivity(intent);
-                           }
-                       }
+                    call.enqueue(new Callback<WeatherModels>() {
+                        @Override
+                        public void onResponse(Call<WeatherModels> call, Response<WeatherModels> response) {
+                            if (response.isSuccessful()) {
+                                Intent intent = new Intent(mContext, com.wit.weather.UserInterface.Weather.class);
+                                intent.putExtra("Weather", Parcels.wrap(response.body()));
+                                mContext.startActivity(intent);
+                            }
+                        }
 
-                       @Override
-                       public void onFailure(Call<WeatherModels> call, Throwable t) {
+                        @Override
+                        public void onFailure(Call<WeatherModels> call, Throwable t) {
 
-                       }
-                   });
+                        }
+                    });
                 }
             });
         }
