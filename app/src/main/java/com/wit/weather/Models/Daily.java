@@ -5,10 +5,12 @@ import java.util.List;
 
 import com.wit.weather.Models.FeelsLike;
 import com.wit.weather.Models.Temp;
-import com.wit.weather.Models.Weather__1;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
+@Parcel
 public class Daily {
 
     @SerializedName("dt")

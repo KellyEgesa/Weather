@@ -3,11 +3,13 @@ package com.wit.weather.Network;
 import com.wit.weather.Constants;
 import com.wit.weather.Models.WeatherModels;
 
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
+import retrofit2.http.QueryMap;
 
 public interface Weather {
-@GET("?lat={latitude}&lon={longitude}&exclude=minutely,hourly&appid="+ Constants.ACCESS_TOKEN)
-    Call<WeatherModels> getWeather(@Path("latitude") String latitude, @Path("longitude") String longitude);
+    @GET("onecall")
+    Call<WeatherModels> getWeather(@QueryMap Map<String, String> options);
 }

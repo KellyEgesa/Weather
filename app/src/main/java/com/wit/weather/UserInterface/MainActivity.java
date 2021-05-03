@@ -1,4 +1,4 @@
-package com.wit.weather;
+package com.wit.weather.UserInterface;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -19,7 +18,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -27,6 +25,7 @@ import android.widget.Toast;
 import com.wit.weather.Adapters.ListCitiesAdapter;
 import com.wit.weather.Models.Cities;
 import com.wit.weather.Models.InitializeCities;
+import com.wit.weather.R;
 
 import java.io.IOException;
 import java.util.ArrayList;
