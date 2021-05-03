@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.app.Activity;
@@ -22,7 +24,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.wit.weather.Adapters.ListCitiesAdapter;
 import com.wit.weather.Models.Cities;
+import com.wit.weather.Models.InitializeCities;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,16 +39,21 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.permissionButton)
     Button mPermissionButton;
-    LocationManager locationManager;
-    Boolean isPermissionGranted, isGPSEnabled;
+    @BindView(R.id.cityRecyclerView)
+    RecyclerView mCityRecyclerView;
 
+    LocationManager locationManager;
+    Boolean isPermissionGranted = false;
+    Boolean isGPSEnabled = false;
+    ArrayList<Cities> cities = new InitializeCities().getCitiesArrayList();
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            isPermissionGranted = true;
+            mPermissionButton.setVisibility(View.GONE);
+            Toast.makeText(this, isPermissionGranted.toString(), Toast.LENGTH_SHORT).show();
             getUserLocation(locationManager);
         }
     }
@@ -53,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         } else {
+            mPermissionButton.setVisibility(View.GONE);
             isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             Criteria criteria = new Criteria();
             if (!isGPSEnabled) {
@@ -76,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                             String countryName = addresses.get(0).getCountryName();
 
                             Cities userCity = new Cities(location.getLatitude(), location.getLongitude(), cityName, countryName);
-
+                            cities.add(0, userCity);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -107,11 +117,19 @@ public class MainActivity extends AppCompatActivity {
         mPermissionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             }
         });
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         getUserLocation(locationManager);
+
+
+        ListCitiesAdapter listCitiesAdapter = new ListCitiesAdapter(cities);
+        mCityRecyclerView.setAdapter(listCitiesAdapter);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
+        mCityRecyclerView.setLayoutManager(layoutManager);
+
     }
 }
 // startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));

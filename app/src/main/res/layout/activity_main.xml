@@ -27,4 +27,9 @@
         android:layout_height="wrap_content"
         android:text="Switch On Gps" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/cityRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </RelativeLayout>
