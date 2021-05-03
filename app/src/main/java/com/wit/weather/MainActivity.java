@@ -42,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.cityRecyclerView)
     RecyclerView mCityRecyclerView;
 
+    ListCitiesAdapter listCitiesAdapter;
+
     LocationManager locationManager;
     Boolean isPermissionGranted = false;
     Boolean isGPSEnabled = false;
@@ -87,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
                             Cities userCity = new Cities(location.getLatitude(), location.getLongitude(), cityName, countryName);
                             cities.add(0, userCity);
+                            listCitiesAdapter.notifyDataSetChanged();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -124,11 +127,12 @@ public class MainActivity extends AppCompatActivity {
         getUserLocation(locationManager);
 
 
-        ListCitiesAdapter listCitiesAdapter = new ListCitiesAdapter(cities);
+        listCitiesAdapter = new ListCitiesAdapter(cities);
         mCityRecyclerView.setAdapter(listCitiesAdapter);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
         mCityRecyclerView.setLayoutManager(layoutManager);
+
 
     }
 }

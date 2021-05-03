@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.wit.weather.Models.Cities;
@@ -46,6 +47,8 @@ public class ListCitiesAdapter extends RecyclerView.Adapter<ListCitiesAdapter.Li
     public class ListCitiesViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.cityTextView)
         TextView mCityName;
+        @BindView(R.id.cardCity)
+        CardView mcardCity;
 
         public ListCitiesViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -53,7 +56,15 @@ public class ListCitiesAdapter extends RecyclerView.Adapter<ListCitiesAdapter.Li
         }
 
         public void bindCities(Cities cities) {
-            mCityName.setText(cities.getCityName());
+            String cityName = cities.getCityName()+", "+cities.getCountryName();
+            mCityName.setText(cityName);
+
+            mcardCity.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
         }
     }
 }
