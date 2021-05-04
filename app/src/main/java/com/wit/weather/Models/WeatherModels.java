@@ -1,7 +1,8 @@
-
 package com.wit.weather.Models;
 
+import java.util.ArrayList;
 import java.util.List;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -24,7 +25,7 @@ public class WeatherModels {
     private Current current;
     @SerializedName("daily")
     @Expose
-    private List<Daily> daily = null;
+    private ArrayList<Daily> daily = null;
 
     public Double getLat() {
         return lat;
@@ -58,11 +59,11 @@ public class WeatherModels {
         this.current = current;
     }
 
-    public List<Daily> getDaily() {
+    public ArrayList<Daily> getDaily() {
         return daily;
     }
 
-    public void setDaily(List<Daily> daily) {
+    public void setDaily(ArrayList<Daily> daily) {
         this.daily = daily;
     }
 

@@ -2,10 +2,12 @@ package com.wit.weather.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
@@ -77,6 +79,7 @@ public class ListCitiesAdapter extends RecyclerView.Adapter<ListCitiesAdapter.Li
             mcardCity.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Toast.makeText(mContext, "Clicked", Toast.LENGTH_SHORT).show();
                     Weather client = WeatherClient.urlRequest();
                     Map<String, String> queryParams = new HashMap<>();
                     queryParams.put("lat", String.valueOf(city.getLatitude()));
@@ -96,12 +99,14 @@ public class ListCitiesAdapter extends RecyclerView.Adapter<ListCitiesAdapter.Li
                                 intent.putExtra("Weather", Parcels.wrap(response.body()));
                                 intent.putExtra("CityName", cityName);
                                 mContext.startActivity(intent);
+                            } else {
+                                Toast.makeText(mContext, "Something went wrong", Toast.LENGTH_LONG).show();
                             }
                         }
 
                         @Override
                         public void onFailure(Call<WeatherModels> call, Throwable t) {
-
+                            Toast.makeText(mContext, "Connection problem, Check your network", Toast.LENGTH_LONG).show();
                         }
                     });
                 }
