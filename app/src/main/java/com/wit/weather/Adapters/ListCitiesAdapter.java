@@ -94,6 +94,7 @@ public class ListCitiesAdapter extends RecyclerView.Adapter<ListCitiesAdapter.Li
                             if (response.isSuccessful()) {
                                 Intent intent = new Intent(mContext, com.wit.weather.UserInterface.Weather.class);
                                 intent.putExtra("Weather", Parcels.wrap(response.body()));
+                                intent.putExtra("CityName", cityName);
                                 mContext.startActivity(intent);
                             }
                         }
