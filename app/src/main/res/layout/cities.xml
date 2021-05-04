@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:background="@color/secondary"
+    android:orientation="vertical"
+    android:padding="5dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardCity"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:cardBackgroundColor="@color/secondary">
 
         <TextView
             android:id="@+id/cityTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="9dp"
+            android:padding="15dp"
             android:text="CityName"
+            android:textColor="#FFFFFF"
             android:textSize="18sp" />
     </androidx.cardview.widget.CardView>
 

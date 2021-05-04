@@ -87,6 +87,7 @@ public class ListWeatherAdapter extends RecyclerView.Adapter<ListWeatherAdapter.
             String humidity = weather.getHumidity() + "%";
             String pressure = weather.getPressure() + " hPa";
             String wind = weather.getWindSpeed() + " m/s";
+            String date = "Current Weather";
 
             mDegreesTextView.setText(temp);
 
@@ -98,10 +99,7 @@ public class ListWeatherAdapter extends RecyclerView.Adapter<ListWeatherAdapter.
             mTextViewPressure.setText(pressure);
             mTextViewWind.setText(wind);
 
-            Date date = new Date(weather.getDt() * 1000L);
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEEEEE, dd MMM yyyy");
-            String dateTrans = simpleDateFormat.format(date);
-            mTextViewDate.setText(dateTrans);
+            mTextViewDate.setText(date);
 
         }
 

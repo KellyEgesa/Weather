@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,6 +32,8 @@ public class Weather extends AppCompatActivity {
     RecyclerView mRecyclerViewWeather;
     @BindView(R.id.textViewTown)
     TextView mTextViewTown;
+    @BindView(R.id.imageViewRepoToolBar)
+    ImageView mImageViewRepoToolBar;
 
     WeatherModels weather;
 
@@ -51,30 +54,14 @@ public class Weather extends AppCompatActivity {
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Weather.this);
         mRecyclerViewWeather.setLayoutManager(layoutManager);
-
-//        String temp = weather.getCurrent().getTemp() + "°";
-//        String feels = "Feels like " + weather.getCurrent().getFeelsLike() + "°";
-//        String photoUrl = "https://openweathermap.org/img/wn/" + weather.getCurrent().getWeather().get(0).getIcon() + "@4x.png";
-//        String humidity = weather.getCurrent().getHumidity() + "%";
-//        String pressure = weather.getCurrent().getPressure() + " hPa";
-//        String wind = weather.getCurrent().getWindSpeed() + " m/s";
-//
-//
-//        mDegreesTextView.setText(temp);
-//
-//        Picasso.get().load(photoUrl).into(mWeatherImageView);
-//        mWeatherText.setText(weather.getCurrent().getWeather().get(0).getMain().toUpperCase());
-//        mWeatherDescriptiontextView.setText(weather.getCurrent().getWeather().get(0).getDescription());
-//        mFeelsTextView.setText(feels);
-//        mTextViewHumidity.setText(humidity);
-//        mTextViewPressure.setText(pressure);
-//        mTextViewWind.setText(wind);
-//
-//        Date date = new Date(weather.getCurrent().getDt() * 1000L);
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEEEEE, dd MMM yyyy");
-//        String dateTrans = simpleDateFormat.format(date);
-//        mTextViewDate.setText(dateTrans);
         mTextViewTown.setText(cityName);
+
+        mImageViewRepoToolBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 }
