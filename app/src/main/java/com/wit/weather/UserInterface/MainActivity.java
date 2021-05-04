@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void getUserLocation(LocationManager locationManager) {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         } else {
             mPermissionButton.setVisibility(View.GONE);
@@ -74,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onLocationChanged(Location location) {
                         Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
-                        Toast.makeText(MainActivity.this, location.toString(), Toast.LENGTH_SHORT).show();
                         try {
                             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
 
@@ -131,8 +131,6 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
         mCityRecyclerView.setLayoutManager(layoutManager);
-
-
     }
 }
 // startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
