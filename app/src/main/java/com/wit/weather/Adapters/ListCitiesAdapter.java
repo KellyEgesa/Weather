@@ -79,7 +79,6 @@ public class ListCitiesAdapter extends RecyclerView.Adapter<ListCitiesAdapter.Li
             mcardCity.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext, "Clicked", Toast.LENGTH_SHORT).show();
                     Weather client = WeatherClient.urlRequest();
                     Map<String, String> queryParams = new HashMap<>();
                     queryParams.put("lat", String.valueOf(city.getLatitude()));
