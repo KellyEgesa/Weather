@@ -28,6 +28,7 @@ import com.wit.weather.Models.Cities;
 import com.wit.weather.Models.InitializeCities;
 import com.wit.weather.R;
 import com.wit.weather.UserInterface.Fragments.LocationPermission;
+import com.wit.weather.UserInterface.Fragments.SwitchOnGpsFragment;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -68,7 +69,9 @@ public class MainActivity extends AppCompatActivity {
             isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             Criteria criteria = new Criteria();
             if (!isGPSEnabled) {
-                startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                FragmentManager fm = getSupportFragmentManager();
+                SwitchOnGpsFragment switchOnGpsFragment = new SwitchOnGpsFragment();
+                switchOnGpsFragment.show(fm, "GPS");
             } else {
                 criteria.setAccuracy(Criteria.ACCURACY_FINE);
                 locationManager.requestSingleUpdate(criteria, new LocationListener() {
@@ -126,5 +129,10 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
         mCityRecyclerView.setLayoutManager(layoutManager);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getUserLocation(locationManager);
+    }
 }
-// startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
