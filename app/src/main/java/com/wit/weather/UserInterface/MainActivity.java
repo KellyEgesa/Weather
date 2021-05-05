@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +27,7 @@ import com.wit.weather.Adapters.ListCitiesAdapter;
 import com.wit.weather.Models.Cities;
 import com.wit.weather.Models.InitializeCities;
 import com.wit.weather.R;
+import com.wit.weather.UserInterface.Fragments.LocationPermission;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,15 +38,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
-    @BindView(R.id.permissionButton)
-    Button mPermissionButton;
     @BindView(R.id.cityRecyclerView)
     RecyclerView mCityRecyclerView;
 
     ListCitiesAdapter listCitiesAdapter;
-
     LocationManager locationManager;
-    Boolean isPermissionGranted = false;
+
+    LocationPermission locationPermission;
+
     Boolean isGPSEnabled = false;
     ArrayList<Cities> cities = new InitializeCities().getCitiesArrayList();
 
@@ -53,18 +54,17 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            mPermissionButton.setVisibility(View.GONE);
-            Toast.makeText(this, isPermissionGranted.toString(), Toast.LENGTH_SHORT).show();
+            locationPermission.dismiss();
             getUserLocation(locationManager);
         }
     }
 
     public void getUserLocation(LocationManager locationManager) {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            FragmentManager fm = getSupportFragmentManager();
+            locationPermission = new LocationPermission();
+            locationPermission.show(fm, "Permission");
         } else {
-            mPermissionButton.setVisibility(View.GONE);
             isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             Criteria criteria = new Criteria();
             if (!isGPSEnabled) {
@@ -116,15 +116,9 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        mPermissionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            }
-        });
+
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         getUserLocation(locationManager);
-
 
         listCitiesAdapter = new ListCitiesAdapter(cities);
         mCityRecyclerView.setAdapter(listCitiesAdapter);
