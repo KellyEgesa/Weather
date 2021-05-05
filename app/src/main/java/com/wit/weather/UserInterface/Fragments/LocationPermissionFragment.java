@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.wit.weather.R;
 
-public class LocationPermission extends DialogFragment {
+public class LocationPermissionFragment extends DialogFragment {
 
 
     @Override
