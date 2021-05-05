@@ -17,6 +17,9 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.wit.weather.Adapters.ListCitiesAdapter;
 import com.wit.weather.Models.Cities;
@@ -36,6 +39,10 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.cityRecyclerView)
     RecyclerView mCityRecyclerView;
+    @BindView(R.id.secondaryLayout)
+    RelativeLayout mSecondaryLayout;
+    @BindView(R.id.mainLayout)
+    LinearLayout mMainLayout;
 
     ListCitiesAdapter listCitiesAdapter;
     LocationManager locationManager;
@@ -43,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
     LocationPermissionFragment locationPermissionFragment;
 
     Boolean isGPSEnabled = false;
+    Boolean gpsWasDisabled = false;
+
     ArrayList<Cities> cities = new InitializeCities().getCitiesArrayList();
 
     @Override
@@ -75,10 +84,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        getUserLocation(locationManager);
+        if (gpsWasDisabled) {
+            gpsWasDisabled = false;
+            getUserLocation(locationManager);
+        }
     }
 
-    public void getUserLocation(LocationManager locationManager) {
+    private void getUserLocation(LocationManager locationManager) {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             FragmentManager fm = getSupportFragmentManager();
             locationPermissionFragment = new LocationPermissionFragment();
@@ -87,9 +99,8 @@ public class MainActivity extends AppCompatActivity {
             isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             Criteria criteria = new Criteria();
             if (!isGPSEnabled) {
-                FragmentManager fm = getSupportFragmentManager();
-                SwitchOnGpsFragment switchOnGpsFragment = new SwitchOnGpsFragment();
-                switchOnGpsFragment.show(fm, "GPS");
+                gpsWasDisabled = true;
+                showLocationSetting();
             } else {
                 criteria.setAccuracy(Criteria.ACCURACY_FINE);
                 locationManager.requestSingleUpdate(criteria, new LocationListener() {
@@ -109,6 +120,8 @@ public class MainActivity extends AppCompatActivity {
                             Cities userCity = new Cities(location.getLatitude(), location.getLongitude(), cityName, countryName);
                             cities.add(0, userCity);
                             listCitiesAdapter.notifyDataSetChanged();
+
+                            switchLayouts();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -128,5 +141,16 @@ public class MainActivity extends AppCompatActivity {
                 }, null);
             }
         }
+    }
+
+    private void showLocationSetting() {
+        FragmentManager fm = getSupportFragmentManager();
+        SwitchOnGpsFragment switchOnGpsFragment = new SwitchOnGpsFragment();
+        switchOnGpsFragment.show(fm, "GPS");
+    }
+
+    private void switchLayouts() {
+        mSecondaryLayout.setVisibility(View.GONE);
+        mMainLayout.setVisibility(View.VISIBLE);
     }
 }

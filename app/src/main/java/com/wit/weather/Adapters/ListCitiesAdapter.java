@@ -1,5 +1,6 @@
 package com.wit.weather.Adapters;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -65,11 +66,13 @@ public class ListCitiesAdapter extends RecyclerView.Adapter<ListCitiesAdapter.Li
         CardView mcardCity;
         Context mContext;
 
+        private ProgressDialog progressDialog;
+
         public ListCitiesViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             mContext = itemView.getContext();
-
+            loadingScreen();
         }
 
         public void bindCities(Cities city) {
@@ -79,6 +82,7 @@ public class ListCitiesAdapter extends RecyclerView.Adapter<ListCitiesAdapter.Li
             mcardCity.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    progressDialog.show();
                     Weather client = WeatherClient.urlRequest();
                     Map<String, String> queryParams = new HashMap<>();
                     queryParams.put("lat", String.valueOf(city.getLatitude()));
@@ -101,15 +105,24 @@ public class ListCitiesAdapter extends RecyclerView.Adapter<ListCitiesAdapter.Li
                             } else {
                                 Toast.makeText(mContext, "Something went wrong", Toast.LENGTH_LONG).show();
                             }
+                            progressDialog.dismiss();
                         }
 
                         @Override
                         public void onFailure(Call<WeatherModels> call, Throwable t) {
+                            progressDialog.dismiss();
                             Toast.makeText(mContext, "Connection problem, Check your network", Toast.LENGTH_LONG).show();
                         }
                     });
                 }
             });
+        }
+
+        private void loadingScreen() {
+            progressDialog = new ProgressDialog(mContext);
+            progressDialog.setTitle("Weather");
+            progressDialog.setMessage("Retrieving weather data ....");
+            progressDialog.setCancelable(false);
         }
     }
 }

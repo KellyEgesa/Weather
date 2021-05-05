@@ -7,10 +7,26 @@
     android:background="@color/secondary"
     tools:context=".UserInterface.MainActivity">
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/secondaryLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/logo" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/mainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="invisible">
 
         <ImageView
             android:id="@+id/imageView2"
